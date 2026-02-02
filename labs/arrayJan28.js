@@ -20,6 +20,6 @@ console.log(evenNumbers)
 console.log(oddNumbers)
 
 const classMembers = ['Scott', 'Zana', 'Deborah', "Lei Hala"]
-const shortName = classMembers.filter(m => m.length < 2)
+const shortName = classMembers.filter(m => m.length < 6)
 console.log(shortName)
 
