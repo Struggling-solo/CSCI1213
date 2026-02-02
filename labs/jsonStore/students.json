@@ -1,0 +1,14 @@
+[
+  {
+    "name": "tom smith",
+    "major": "dusting",
+    "gpa": 3.9,
+    "enrollmentDate": "2026-02-02T18:13:47.741Z"
+  },
+  {
+    "name": "Forest Gump",
+    "major": "shrimping",
+    "gpa": 2,
+    "enrollmentDate": "2026-02-02T18:14:07.274Z"
+  }
+]
