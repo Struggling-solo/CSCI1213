@@ -37,7 +37,7 @@ function saveStudents(students, filename) {
     try {
         // Convert JavaScript array to JSON string
         const jsonData = JSON.stringify(students, null, 2);
-        
+
         // Write to file
         fs.writeFileSync(filename, jsonData, 'utf-8');
         
@@ -95,6 +95,8 @@ function showMenu() {
     console.log('3. Save to file');
     console.log('4. Load from file');
     console.log('5. Exit');
+    console.log('6. Show Honors');
+    console.log('7. Show GPA calculations');
     console.log('=================================');
 }
 
@@ -132,13 +134,46 @@ function main() {
                 console.log('\nGoodbye!');
                 running = false;
                 break;
+
+            case 6:
+                students = loadStudents(filename);
+                showHonorStudents(students);
+                break;
                 
+            case 7:
+                students = loadStudents(filename);
+                gpaCalculations(students);
+                break;
+
             default:
                 console.log('Invalid option. Please try again.');
         }
     }
 }
  
+function showHonorStudents(students){
+    const honors = students.filter(student => student.gpa > 3.0)
+    honors.forEach(student =>{
 
+    console.log (`Honor Students: ${student.name}`)
+    })
+}
+function gpaCalculations(students){
+    if (students.length === 0) {
+        console.log("No students available.");
+        return;
+    }
+    const gpas = students.map(student => student.gpa);
+
+    // const gpaAve = ((total.gpas) / gpas.length);
+    const gpaHigh  = Math.max(...gpas);
+    const gpaLow = Math.min(...gpas);
+    const numHighGpa = gpas.filter(gpa => gpa > 3.5).length;
+
+    // console.log ("Average GPA: ", gpaAve);
+    console.log ("Highest GPA: ", gpaHigh.toFixed(2));
+    console.log("Lowest GPA: ", gpaLow.toFixed(2));
+    console.log("Number of students with GPA above 3.5:", numHighGpa);
+}
 // Start the application
 main();
