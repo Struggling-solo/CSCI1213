@@ -6,6 +6,7 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
+const { resolve } = require('dns/promises');
 
 const PORT = 3000;
 
@@ -169,7 +170,42 @@ function generateResponseHTML(formData) {
 // Create the HTTP server
 const server = http.createServer((req, res) => {
     console.log(`Starter file for the server. We'll add code during lab`);
-    
+    const parsedUrl = url.parse(req.url, true)
+    const pathname = parsedUrl.pathname
+
+    // start routing
+
+    if(pathname === '/' || pathname === '/student-form.html' || pathname === '/labs'){
+        console.log('Serving student form')
+        const filePath = path.join(__dirname,'public','student-form.html')
+        serveStaticFile('/student-form.html', res)
+    }
+    else if (pathname.startsWith('/css/') ||
+             pathname.startsWith('/js/') ||
+             pathname.startsWith('/images/')) {
+                console.log('Serving Static file')
+                serveStaticFile(pathname, res)
+             }
+    else if (pathname === '/submit-student' && req.method === 'POST'){
+        console.log('Processing the form')
+        let body =''
+
+        //collect the chunks
+        req.on('data', (chunk) =>{
+            body += chunk
+        })
+        req.on('end', () => {
+            const formData = parseFormData(body)
+            console.log('Recvd form data')
+            console.log(formData)
+
+            //generate and send response
+
+            const responseHTML = generateResponseHTML(formData)
+            res.writeHead(200,{'Content-Type' : 'text/html'} )
+            res.end(responseHTML)
+        })
+    }
 });
 
 // Start the server
