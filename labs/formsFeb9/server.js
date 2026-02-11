@@ -31,7 +31,7 @@ const mimeTypes = {
 function serveStaticFile(requestedPath, res) {
     // Construct the full file path
     const filePath = path.join(__dirname, 'public', requestedPath);
-    
+                            // 'public' makes sure all info comes from/ goes to public directory - security issue
     // SECURITY: Ensure the requested file is within the public directory
     const publicDir = path.join(__dirname, 'public');
     if (!filePath.startsWith(publicDir)) {
@@ -53,7 +53,7 @@ function serveStaticFile(requestedPath, res) {
         // Determine the Content-Type based on file extension
         const ext = path.extname(filePath);
         const contentType = mimeTypes[ext] || 'application/octet-stream';
-        
+        // above selects extension type from list created lines 15-23
         console.log(`Serving ${filePath} as ${contentType}`);
         
         // Send the file with appropriate headers
@@ -68,7 +68,7 @@ function serveStaticFile(requestedPath, res) {
 function parseFormData(formDataString) {
     const params = new URLSearchParams(formDataString);
     const formData = {};
-    
+    // params is an instance of url search params, .entries give checkbox items
     for (const [key, value] of params.entries()) {
         // Handle multiple values with the same key (checkboxes)
         if (formData[key]) {
@@ -190,7 +190,7 @@ const server = http.createServer((req, res) => {
         console.log('Processing the form')
         let body =''
 
-        //collect the chunks
+        //collect the chunks, it may be huge (like customer complaint)
         req.on('data', (chunk) =>{
             body += chunk
         })
